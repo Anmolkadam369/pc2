@@ -43,18 +43,20 @@ function EmployerLogin() {
                 body: JSON.stringify(formData),
             });
                                             
-            // if (!response.ok) {
-            //     throw new Error(`HTTP error! Status: ${response.status}`);
-            // }
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
 
             const responseData = await response.json();
             console.log('API Response:', responseData);
+            if(responseData.loggedInFrom == "Employee")  navigate('/employers/job/listing');
+            else navigate ('/applicant/job')
             const comingToken = responseData.accessToken;
             const comingEmailId = responseData.email;
             auth.saveAuthData({ token: comingToken, emailId: comingEmailId });
 
-            setLoginMessage(responseData.message);
-            navigate('/employers/job/listing');
+            // setLoginMessage(responseData.message);
+            
 
             // You can add further logic here based on the response, such as redirecting or updating state.
         } catch (error) {
